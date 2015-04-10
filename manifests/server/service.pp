@@ -12,16 +12,12 @@ class mysql::server::service {
     $service_ensure = undef
   }
 
-  if $mysql::server::override_options['mysqld'] and $mysql::server::override_options['mysqld']['user'] {
-    $mysqluser = $mysql::server::override_options['mysqld']['user']
-  } else {
-    $mysqluser = $options['mysqld']['user']
-  }
-
-  file { $options['mysqld']['log-error']:
-    ensure => present,
-    owner  => $mysqluser,
-    group  => $::mysql::server::mysql_group,
+  if $options['mysqld']['log-error'] {
+    file { $options['mysqld']['log-error']:
+      ensure => present,
+      owner  => $mysqluser,
+      group  => $::mysql::server::mysql_group,
+    }
   }
 
   service { 'mysqld':
